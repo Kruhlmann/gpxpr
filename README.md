@@ -1,5 +1,7 @@
 # gpxpr
 
+GPX file parser and renderer.
+
 ## Development
 
 ```sh
