@@ -1,11 +1,15 @@
 from io import TextIOWrapper
 import os
+from typing import Union
 
+from gpx_parser.io.device import Device
 from gpx_parser.io.file.file_is_not_a_file_error import FileIsNotAFileError
 from gpx_parser.io.file.invalid_file_persmission_error import InvalidFilePermissionError
+from gpx_parser.io.readable import Readable
+from gpx_parser.io.writable import Writable
 
 
-class FileHandle:
+class FileHandle(Writable, Readable):
     def __init__(self, path: str, *permissions: int):
         self._check_path_exists(path)
         self._check_path_is_file(path)
@@ -15,13 +19,11 @@ class FileHandle:
     def close(self):
         self._source.close()
 
-    @property
-    def lines(self) -> list[str]:
-        return self._source.readlines()
-
-    @property
-    def content(self) -> str:
+    def read(self) -> str:
         return self._source.read()
+
+    def write(self, content: str) -> int:
+        return self._source.write(content)
 
     def _check_path_exists(self, path: str) -> None:
         if not os.path.exists(path):

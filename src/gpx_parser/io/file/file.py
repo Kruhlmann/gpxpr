@@ -1,9 +1,10 @@
 from typing import Iterable, Optional
 
+from gpx_parser.io.device import Device
 from gpx_parser.io.file.handle import FileHandle
 
 
-class File:
+class File(Device):
     def __init__(self, path: str, *permissions: int):
         self._path: str = path
         self._permissions: Iterable[int] = permissions

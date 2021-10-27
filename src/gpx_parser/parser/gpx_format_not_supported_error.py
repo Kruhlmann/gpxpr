@@ -1,0 +1,2 @@
+class GPXFormatNotSupportedError(ValueError):
+    pass

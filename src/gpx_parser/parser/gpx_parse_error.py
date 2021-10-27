@@ -1,0 +1,2 @@
+class GPXParseError(ValueError):
+    pass
