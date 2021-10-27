@@ -1,0 +1,25 @@
+name: gpxpr tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  unittest-coverage:
+    name: Run unittest and generate code coverage report.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python 3.8 for unitttests.
+        uses: actions/setup-python@v2
+        with:
+            python-version: 3.8
+      - name: Run unittests
+        run: |
+            make install-tests
+            make test
+            bash <(curl -s https://codecov.io/bash)
+        env:
+            CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
