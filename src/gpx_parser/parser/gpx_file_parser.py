@@ -26,9 +26,7 @@ class GPXFileParser(Parser):
 
     def _verify_gpx_integrity(self, gpx: gpxpy.mod_gpx.GPX) -> None:
         if len(gpx.tracks) != 1:
-            raise GPXFormatNotSupportedError(
-                "Only single-track GPX files are supported."
-            )
+            raise GPXFormatNotSupportedError("Multi-track GPX files not supported.")
 
     def _intervals_in_gpx(self, gpx: gpxpy.mod_gpx.GPX) -> Iterator[GPXInterval]:
         for track in gpx.tracks:
