@@ -1,5 +1,8 @@
 # gpxpr
 
+![GitHub branch checks state](https://img.shields.io/github/checks-status/kruhlmann/gpxpr/master?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/kruhlmann/gpxpr?style=for-the-badge)
+
 GPX file parser and renderer.
 
 ## Development
