@@ -1,0 +1,2 @@
+class InvalidFilePermissionError(KeyError):
+    pass

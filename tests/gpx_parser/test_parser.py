@@ -1,5 +1,7 @@
-from gpx_parser.gpx_parser import parse_gpx_file
+import os
+
+from gpx_parser.parser.gpx_file_parser import GPXFileParser
 
 
 def test_parser():
-    parse_gpx_file()
+    GPXFileParser().parse("README.md")

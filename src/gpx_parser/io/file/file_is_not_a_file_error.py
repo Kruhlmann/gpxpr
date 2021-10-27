@@ -1,0 +1,2 @@
+class FileIsNotAFileError(FileNotFoundError):
+    pass
