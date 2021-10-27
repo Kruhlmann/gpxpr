@@ -1,3 +1,3 @@
 class Writable:
-    def write(self):
+    def write(self, _: str) -> int:
         raise NotImplementedError()

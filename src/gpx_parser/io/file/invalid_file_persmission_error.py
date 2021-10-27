@@ -1,2 +1,2 @@
 class InvalidFilePermissionError(KeyError):
-    pass
+    pass  # noqa: WPS420,WPS604

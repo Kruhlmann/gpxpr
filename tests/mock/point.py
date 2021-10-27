@@ -14,11 +14,11 @@ class MockPoint(Point):
         self._speed_difference: Any = speed_difference
         self._distance_difference: Any = distance_difference
 
-    def time_difference(self, _: Point) -> Any:
+    def time_difference(self, _: Point) -> Any:  # noqa: WPS114
         return self._duration_difference
 
-    def distance_2d(self, _: Point) -> Any:
+    def distance_2d(self, _: Point) -> Any:  # noqa: WPS114, WPS114
         return self._distance_difference
 
-    def speed_between(self, _: Point) -> Any:
+    def speed_between(self, _: Point) -> Any:  # noqa: WPS114
         return self._speed_difference

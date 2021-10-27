@@ -1,2 +1,2 @@
 class GPXParseError(ValueError):
-    pass
+    pass  # noqa: WPS420,WPS604

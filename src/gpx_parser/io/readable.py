@@ -1,3 +1,3 @@
 class Readable:
-    def read(self):
+    def read(self) -> str:
         raise NotImplementedError()

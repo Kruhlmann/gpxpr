@@ -3,7 +3,7 @@ from gpx_parser.parser.gpx_file_parser import GPXFileParser
 ACCEPTABLE_ERROR_THRESHOLD = 0.1
 
 
-def test_valid_file():
+def test_valid_file() -> None:
     intervals = list(GPXFileParser("tests/data/valid.gpx").parse())
     assert len(intervals) == 2
     for interval in intervals:
