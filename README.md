@@ -5,12 +5,40 @@
 
 GPX file parser and renderer.
 
-## Development
+## Installation
+
+### From PIP
 
 ```sh
-make lint # Runs flake8, black and isort in checking mode.
-make test # Runs unit tests.
-make install # Installs the 'gpxpr' entrypoint
+pip install gpxpr
+```
+
+### Manual
+
+```
+git clone https://github.com/Kruhlmann/gpxpr
+cd gpxpr
+make install
+```
+
+## Usage
+
+```
+usage: gpxpr [-h] -r RENDERER -w WALKING -v RUNNING [-o DESTINATION] target
+
+positional arguments:
+  target                File to process
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -r RENDERER, --renderer RENDERER
+                        Renderer to use [stdout, matplot]
+  -w WALKING, --min-walking-speed WALKING
+                        Slowest min/km where a runner is considered 'walking'
+  -v RUNNING, --min-running-speed RUNNING
+                        Slowest min/km when a runner is considered 'running'
+  -o DESTINATION, --output DESTINATION
+                        Output location. Default is /dev/stdout
 ```
 
 ### Windows
