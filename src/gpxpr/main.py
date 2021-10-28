@@ -6,7 +6,7 @@ from gpxpr.argparser import GPXPRArgParserFactory
 
 
 def parse_and_render(argv: list[str]) -> None:
-    argparser = GPXPRArgParserFactory.create_argparser()
+    argparser = GPXPRArgParserFactory.create_argparser(RendererFactory.RENDERERS.keys())
     arguments = argparser.parse_args(argv)
     parser = GPXFileParser(arguments.target)
     renderer = RendererFactory.renderer_from_string(

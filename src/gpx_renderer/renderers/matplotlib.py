@@ -1,35 +1,58 @@
 import sys
-from typing import Iterator
+from typing import Any, Iterator, Optional
 
 from matplotlib import pyplot
 import numpy
 
 from gpx_parser.parser.gpx_track_interval import GPXInterval
+from gpx_renderer.line import Line
 from gpx_renderer.renderer import Renderer
+from gpx_renderer.vector import Vector
 
 
 class MatplotLibRenderer(Renderer):
-    def _compute_coordinates(
+    def __init__(self, running: float, walking: float, destination: str):
+        super().__init__(running=running, walking=walking, destination=destination)
+        self._running_color = "green"
+        self._walking_color = "orange"
+        self._standing_color = "red"
+
+    def _color_from_pace(self, pace: float) -> str:
+        if pace < self._running:
+            return self._running_color
+        if pace < self._walking:
+            return self._walking_color
+        return self._standing_color
+
+    def _compute_lines(
         self,
         intervals: Iterator[GPXInterval],
-    ) -> Iterator[tuple[tuple[int, float], tuple[int, float]]]:
+    ) -> Iterator[Line]:
         last_idx: int = 1
+        last_vector: Optional[Vector] = None
         for interval in intervals:
-            duration_in_seconds = int(interval.duration_s) + 1
             x1 = last_idx
-            x2 = last_idx + duration_in_seconds
+            x2 = last_idx + int(interval.duration_s) + 1
+            x = x2 - abs(x1 - x2) / 2
             y = min(interval.speed_kmtime, 40)
-            yield ((x1, y), (x2, y))
+            color = self._color_from_pace(interval.speed_kmtime)
+            current_vector = Vector(x, y)
+            yield Line(
+                start=last_vector or current_vector, end=current_vector, color=color
+            )
             last_idx = x2
+            last_vector = current_vector
+
+    def _set_axis_aspect_ration(self, axis: Any, ratio: float) -> None:
+        x_left, x_right = axis.get_xlim()
+        y_low, y_high = axis.get_ylim()
+        axis.set_aspect(abs((x_right - x_left) / (y_low - y_high)) * ratio)
 
     def render(self, intervals: Iterator[GPXInterval]) -> None:
-        times: list[int] = []
-        paces: list[float] = []
-        for coordinate in self._compute_coordinates(intervals):
-            times.append(numpy.median(coordinate[0][0]))
-            times.append(numpy.median(coordinate[1][0]))
-            paces.append(numpy.mean(coordinate[0][1]))
-            paces.append(numpy.mean(coordinate[1][1]))
+        _, ax = pyplot.subplots(figsize=(30, 5))
+        for line in self._compute_lines(intervals):
+            p1 = [line.start.x, line.end.x]
+            p2 = [line.start.y, line.end.y]
+            ax.plot(p1, p2, color=line.color)
         pyplot.gca().invert_yaxis()
-        pyplot.plot(times, paces, "-")
         pyplot.savefig(self._destination or sys.stdout)

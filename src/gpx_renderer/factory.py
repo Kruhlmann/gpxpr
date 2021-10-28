@@ -8,8 +8,8 @@ from gpx_renderer.renderers.stdout import STDOUTRenderer
 
 class RendererFactory:
     RENDERERS: dict[str, Type[Renderer]] = {  # noqa: WPS115
-        "STDOUTRenderer": STDOUTRenderer,
-        "MatplotLibRenderer": MatplotLibRenderer,
+        "stdout": STDOUTRenderer,
+        "matplot": MatplotLibRenderer,
     }
 
     @staticmethod
