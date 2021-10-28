@@ -17,7 +17,7 @@ class STDOUTRenderer(Renderer):
         self._render_legend()
         self._render_graph(intervals)
 
-    def _color_from_pace(self, pace: float) -> TerminalColors:
+    def _color_from_pace(self, pace: float) -> str:
         if pace < self._running:
             return self._running_color
         if pace < self._walking:

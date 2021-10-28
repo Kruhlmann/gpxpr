@@ -2,12 +2,14 @@ from typing import Type
 
 from gpx_renderer.renderer import Renderer
 from gpx_renderer.renderer_not_found_error import RendererNotFoundError
+from gpx_renderer.renderers.matplotlib import MatplotLibRenderer
 from gpx_renderer.renderers.stdout import STDOUTRenderer
 
 
 class RendererFactory:
     RENDERERS: dict[str, Type[Renderer]] = {  # noqa: WPS115
         "STDOUTRenderer": STDOUTRenderer,
+        "MatplotLibRenderer": MatplotLibRenderer,
     }
 
     @staticmethod

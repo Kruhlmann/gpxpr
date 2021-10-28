@@ -39,7 +39,7 @@ class GPXPRArgParserFactory:
             type=str,
             help="Output location. Default is /dev/stdout",
             action="store",
-            dest="output",
+            dest="destination",
         )
         argparser.add_argument(
             "target",
