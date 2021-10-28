@@ -13,6 +13,7 @@ def parse_and_render(argv: list[str]) -> None:
         renderer=arguments.renderer,
         running=arguments.running,
         walking=arguments.walking,
+        destination=arguments.target,
     )
     intervals = parser.parse()
     renderer.render(intervals)

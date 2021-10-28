@@ -15,7 +15,12 @@ class RendererFactory:
         renderer: str,
         running: float,
         walking: float,
+        destination: str,
     ) -> Renderer:
         if renderer not in RendererFactory.RENDERERS.keys():
             raise RendererNotFoundError(f"No such renderer {renderer}.")
-        return RendererFactory.RENDERERS[renderer](running=running, walking=walking)
+        return RendererFactory.RENDERERS[renderer](
+            running=running,
+            walking=walking,
+            destination=destination,
+        )

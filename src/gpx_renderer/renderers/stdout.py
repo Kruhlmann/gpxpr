@@ -7,11 +7,15 @@ from gpx_renderer.terminal_colors import TerminalColors
 
 
 class STDOUTRenderer(Renderer):
-    def __init__(self, running: float, walking: float):
-        super().__init__(running=running, walking=walking)
+    def __init__(self, running: float, walking: float, destination: str):
+        super().__init__(running=running, walking=walking, destination=destination)
         self._running_color = TerminalColors.OKCYAN
         self._walking_color = TerminalColors.WARNING
         self._standing_color = TerminalColors.FAIL
+
+    def render(self, intervals: Iterator[GPXInterval]) -> None:
+        self._render_legend()
+        self._render_graph(intervals)
 
     def _color_from_pace(self, pace: float) -> TerminalColors:
         if pace < self._running:
@@ -20,20 +24,16 @@ class STDOUTRenderer(Renderer):
             return self._walking_color
         return self._standing_color
 
-    def _render_legend(self):
+    def _render_legend(self) -> None:
         sys.stdout.write(
-            f"{self._standing_color}█{TerminalColors.ENDC}: Standing (pace is slower than {self._walking} min/km)\n",
+            f"{self._standing_color}█{TerminalColors.ENDC}: Standing (pace is slower than {self._walking} min/km)\n",  # noqa: WPS411,E501
         )
         sys.stdout.write(
-            f"{self._walking_color}█{TerminalColors.ENDC}: Walking  (pace is between {self._walking} min/km and {self._running} min/km)\n",
+            f"{self._walking_color}█{TerminalColors.ENDC}: Walking  (pace is between {self._walking} min/km and {self._running} min/km)\n",  # noqa: WPS411,E501,WPS221
         )
         sys.stdout.write(
             f"{self._running_color}█{TerminalColors.ENDC}: Running  (pace is faster than {self._running} min/km)\n",
         )
-
-    def render(self, intervals: Iterator[GPXInterval]) -> None:
-        self._render_legend()
-        self._render_graph(intervals)
 
     def _render_graph(self, intervals: Iterator[GPXInterval]) -> None:
         for interval in intervals:
