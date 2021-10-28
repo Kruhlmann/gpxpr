@@ -41,6 +41,8 @@ optional arguments:
                         Output location. Default is /dev/stdout
 ```
 
+## Developing
+
 ### Windows
 
 The recommended way to develop on Windows is the make use of the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install) and then referring to the UNIX-like section.
