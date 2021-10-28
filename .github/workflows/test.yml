@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup python 3.8 for unitttests.
+      - name: Setup python 3.9 for unitttests.
         uses: actions/setup-python@v2
         with:
-            python-version: 3.8
+            python-version: 3.9
       - name: Run unittests
         run: |
             make install-tests
