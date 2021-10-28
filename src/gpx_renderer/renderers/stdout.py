@@ -33,6 +33,11 @@ class STDOUTRenderer(Renderer):
 
     def render(self, intervals: Iterator[GPXInterval]) -> None:
         self._render_legend()
+        self._render_graph(intervals)
+
+    def _render_graph(self, intervals: Iterator[GPXInterval]) -> None:
         for interval in intervals:
-            color = self._color_from_pace(interval.speed_kmtime)
-            sys.stdout.write(f"{color}█{TerminalColors.ENDC}")
+            number_of_seconds_active = range(int(interval.duration_s) + 1)
+            for _ in number_of_seconds_active:
+                color = self._color_from_pace(interval.speed_kmtime)
+                sys.stdout.write(f"{color}█{TerminalColors.ENDC}")
