@@ -1,8 +1,9 @@
+import datetime
 import sys
 from typing import Any, Iterator, Optional
 
+from matplotlib.lines import Line2D
 from matplotlib import pyplot
-import numpy
 
 from gpx_parser.parser.gpx_track_interval import GPXInterval
 from gpx_renderer.line import Line
@@ -34,7 +35,7 @@ class MatplotLibRenderer(Renderer):
             x1 = last_idx
             x2 = last_idx + int(interval.duration_s) + 1
             x = x2 - abs(x1 - x2) / 2
-            y = min(interval.speed_kmtime, 40)
+            y = min(interval.speed_kmtime, self._walking)
             color = self._color_from_pace(interval.speed_kmtime)
             current_vector = Vector(x, y)
             yield Line(
@@ -43,16 +44,30 @@ class MatplotLibRenderer(Renderer):
             last_idx = x2
             last_vector = current_vector
 
-    def _set_axis_aspect_ration(self, axis: Any, ratio: float) -> None:
-        x_left, x_right = axis.get_xlim()
-        y_low, y_high = axis.get_ylim()
-        axis.set_aspect(abs((x_right - x_left) / (y_low - y_high)) * ratio)
+    def _set_legend(self, axes: Any) -> None:
+        custom_lines = [
+            Line2D([0], [0], color=self._running_color, lw=4),
+            Line2D([0], [0], color=self._walking_color, lw=4),
+            Line2D([0], [0], color=self._standing_color, lw=4),
+        ]
+        axes.legend(custom_lines, ["Running", "Walking", "Standing"])
+
+    def _set_axes_formatting(self, axes: Any) -> None:
+        axes.xaxis.set_major_formatter(self._x_axis_formatter)
+        axes.yaxis.grid(True)
+        pyplot.xlabel("Time")
+        pyplot.ylabel("Pace (min/km)")
+
+    def _x_axis_formatter(self, seconds: int, _: Any) -> str:
+        return str(datetime.timedelta(seconds=seconds))
 
     def render(self, intervals: Iterator[GPXInterval]) -> None:
-        _, ax = pyplot.subplots(figsize=(30, 5))
+        _, axes = pyplot.subplots(figsize=(30, 5))
         for line in self._compute_lines(intervals):
             p1 = [line.start.x, line.end.x]
             p2 = [line.start.y, line.end.y]
-            ax.plot(p1, p2, color=line.color)
+            axes.plot(p1, p2, color=line.color)
+        self._set_legend(axes)
+        self._set_axes_formatting(axes)
         pyplot.gca().invert_yaxis()
         pyplot.savefig(self._destination or sys.stdout)
