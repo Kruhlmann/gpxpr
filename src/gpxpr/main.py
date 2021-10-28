@@ -1,6 +1,7 @@
 import sys
 
 from gpx_parser.parser.gpx_file_parser import GPXFileParser
+from gpx_renderer.factory import RendererFactory
 from gpxpr.argparser import GPXPRArgParserFactory
 
 
@@ -8,7 +9,13 @@ def parse_and_render(argv: list[str]) -> None:
     argparser = GPXPRArgParserFactory.create_argparser()
     arguments = argparser.parse_args(argv)
     parser = GPXFileParser(arguments.target)
-    parser.parse()
+    renderer = RendererFactory.renderer_from_string(
+        arguments.renderer,
+        arguments.walking,
+        arguments.running,
+    )
+    intervals = parser.parse()
+    renderer.render(intervals)
 
 
 def main() -> None:

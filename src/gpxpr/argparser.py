@@ -15,6 +15,24 @@ class GPXPRArgParserFactory:
             dest="renderer",
         )
         argparser.add_argument(
+            "-w",
+            "--min-walking-speed",
+            required=True,
+            type=float,
+            help="Slowest min/km where a runner is considered 'walking'",
+            action="store",
+            dest="walking",
+        )
+        argparser.add_argument(
+            "-v",
+            "--min-running-speed",
+            required=True,
+            type=float,
+            help="Slowest min/km when a runner is considered 'running'",
+            action="store",
+            dest="running",
+        )
+        argparser.add_argument(
             "-o",
             "--output",
             required=False,
