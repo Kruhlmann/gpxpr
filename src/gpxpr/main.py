@@ -9,7 +9,6 @@ def parse_and_render(argv: list[str]) -> None:
     argparser = GPXPRArgParserFactory.create_argparser()
     arguments = argparser.parse_args(argv)
     parser = GPXFileParser(arguments.target)
-    print(arguments)
     renderer = RendererFactory.renderer_from_string(
         renderer=arguments.renderer,
         running=arguments.running,
