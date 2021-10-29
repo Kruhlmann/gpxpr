@@ -32,10 +32,10 @@ class MatplotLibRenderer(Renderer):
         last_idx: int = 1
         last_vector: Optional[Vector] = None
         for interval in intervals:
-            x1 = last_idx
-            x2 = last_idx + int(interval.duration_s) + 1
-            x = x2 - abs(x1 - x2) / 2
-            y = min(interval.speed_kmtime, self._walking)
+            x1 = last_idx  # noqa: WPS121
+            x2 = last_idx + int(interval.duration_s) + 1  # noqa: WPS121
+            x = x2 - abs(x1 - x2) / 2  # noqa: WPS121
+            y = min(interval.speed_kmtime, self._walking)  # noqa: WPS121
             color = self._color_from_pace(interval.speed_kmtime)
             current_vector = Vector(x, y)
             yield Line(
