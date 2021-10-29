@@ -3,15 +3,16 @@ from typing import Type
 from gpx_renderer.renderer import Renderer
 from gpx_renderer.renderer_not_found_error import RendererNotFoundError
 from gpx_renderer.renderers.distance.matplotlib import MatplotLibDistanceRenderer
-from gpx_renderer.renderers.stdout import STDOUTRenderer
+from gpx_renderer.renderers.distance.stdout import STDOUTDistanceRenderer
 from gpx_renderer.renderers.time.matplotlib import MatplotLibTimeRenderer
+from gpx_renderer.renderers.time.stdout import STDOUTTimeRenderer
 
 
 class RendererFactory:
     RENDERERS: dict[str, dict[str, Type[Renderer]]] = {  # noqa: WPS115
         "stdout": {
-            "time": STDOUTRenderer,
-            "distance": STDOUTRenderer,
+            "time": STDOUTTimeRenderer,
+            "distance": STDOUTDistanceRenderer,
         },
         "matplot": {
             "time": MatplotLibTimeRenderer,

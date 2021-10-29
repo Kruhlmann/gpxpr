@@ -19,19 +19,23 @@ class MatplotLibRenderer(Renderer, abc.ABC):
         self._standing_color: str = "red"
         self._xlabel: str = xlabel
 
+    def render(self, intervals: Iterator[GPXInterval]) -> None:
+        _, axes = pyplot.subplots(figsize=(30, 5))
+        for line in self._compute_lines(intervals):
+            p1 = [line.start.x, line.end.x]
+            p2 = [line.start.y, line.end.y]
+            axes.plot(p1, p2, color=line.color)
+        self._set_legend(axes)
+        self._set_axes_formatting(axes)
+        pyplot.gca().invert_yaxis()
+        pyplot.savefig(self._destination or sys.stdout)
+
     def _color_from_pace(self, pace: float) -> str:
         if pace < self._running:
             return self._running_color
         if pace < self._walking:
             return self._walking_color
         return self._standing_color
-
-    @abc.abstractmethod
-    def _compute_lines(
-        self,
-        intervals: Iterator[GPXInterval],
-    ) -> Iterator[Line]:
-        raise NotImplementedError()
 
     def _set_legend(self, axes: Any) -> None:
         custom_lines = [
@@ -47,16 +51,13 @@ class MatplotLibRenderer(Renderer, abc.ABC):
         pyplot.xlabel(self._xlabel)
         pyplot.ylabel("Pace (min/km)")
 
-    def _x_axis_formatter(self, seconds: int, _: Any) -> str:
-        return str(datetime.timedelta(seconds=seconds))
+    @abc.abstractmethod
+    def _compute_lines(
+        self,
+        intervals: Iterator[GPXInterval],
+    ) -> Iterator[Line]:
+        raise NotImplementedError()
 
-    def render(self, intervals: Iterator[GPXInterval]) -> None:
-        _, axes = pyplot.subplots(figsize=(30, 5))
-        for line in self._compute_lines(intervals):
-            p1 = [line.start.x, line.end.x]
-            p2 = [line.start.y, line.end.y]
-            axes.plot(p1, p2, color=line.color)
-        self._set_legend(axes)
-        self._set_axes_formatting(axes)
-        pyplot.gca().invert_yaxis()
-        pyplot.savefig(self._destination or sys.stdout)
+    @abc.abstractmethod
+    def _x_axis_formatter(self, units: int, _: Any) -> str:
+        raise NotImplementedError()

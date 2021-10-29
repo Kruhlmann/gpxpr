@@ -1,4 +1,4 @@
-from typing import Iterator, Optional
+from typing import Any, Iterator, Optional
 
 from gpx_parser.parser.gpx_track_interval import GPXInterval
 from gpx_renderer.line import Line
@@ -33,3 +33,6 @@ class MatplotLibDistanceRenderer(MatplotLibRenderer):
             )
             current_distance += interval.distance_m
             last_vector = current_vector
+
+    def _x_axis_formatter(self, units: int, _: Any) -> str:
+        return str(units)

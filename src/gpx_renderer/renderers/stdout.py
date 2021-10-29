@@ -1,3 +1,4 @@
+import abc
 import sys
 from typing import Iterator
 
@@ -6,7 +7,7 @@ from gpx_renderer.renderer import Renderer
 from gpx_renderer.terminal_colors import TerminalColors
 
 
-class STDOUTRenderer(Renderer):
+class STDOUTRenderer(Renderer, abc.ABC):
     def __init__(self, running: float, walking: float, destination: str):
         super().__init__(running=running, walking=walking, destination=destination)
         self._running_color = TerminalColors.OKCYAN
@@ -35,9 +36,10 @@ class STDOUTRenderer(Renderer):
             f"{self._running_color}█{TerminalColors.ENDC}: Running  (pace is faster than {self._running} min/km)\n",
         )
 
+    @abc.abstractmethod
+    def _generate_points(self, intervals: Iterator[GPXInterval]) -> Iterator[str]:
+        raise NotImplementedError()
+
     def _render_graph(self, intervals: Iterator[GPXInterval]) -> None:
-        for interval in intervals:
-            number_of_seconds_active = range(int(interval.duration_s) + 1)
-            for _ in number_of_seconds_active:
-                color = self._color_from_pace(interval.speed_kmtime)
-                sys.stdout.write(f"{color}█{TerminalColors.ENDC}")
+        for point in self._generate_points(intervals):
+            sys.stdout.write(point)
