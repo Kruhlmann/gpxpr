@@ -15,14 +15,16 @@ class MatplotLibDistanceRenderer(MatplotLibRenderer):
             xlabel="Distance (meters)",
         )
 
-    def _compute_lines(self, intervals: Iterator[GPXInterval]) -> Iterator[Line]:
+    def _compute_lines(
+        self, intervals: Iterator[GPXInterval]
+    ) -> Iterator[Line]:  # noqa: WPS210
         current_distance: float = 0
         last_vector: Optional[Vector] = None
         for interval in intervals:
-            x1 = current_distance  # noqa: WPS121
-            x2 = current_distance + interval.distance_m  # noqa: WPS121
-            x = x2 - abs(x1 - x2) / 2  # noqa: WPS121
-            y = min(interval.speed_kmtime, self._walking)  # noqa: WPS121
+            x1 = current_distance  # noqa: WPS121,WPS111
+            x2 = current_distance + interval.distance_m  # noqa: WPS121,WPS111
+            x = x2 - abs(x1 - x2) / 2  # noqa: WPS121,WPS111
+            y = min(interval.speed_kmtime, self._walking)  # noqa: WPS121,WPS111
             color = self._color_from_pace(interval.speed_kmtime)
             current_vector = Vector(x, y)
             current_distance += 1

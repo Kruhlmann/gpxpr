@@ -9,7 +9,7 @@ from gpx_renderer.renderers.time.stdout import STDOUTTimeRenderer
 
 
 class RendererFactory:
-    RENDERERS: dict[str, dict[str, Type[Renderer]]] = {  # noqa: WPS115
+    RENDERERS: dict[str, dict[str, Type[Renderer]]] = {  # noqa: WPS115,WPS234
         "stdout": {
             "time": STDOUTTimeRenderer,
             "distance": STDOUTDistanceRenderer,
@@ -32,7 +32,7 @@ class RendererFactory:
             raise RendererNotFoundError(f"No such renderer {renderer}.")
         if aggregation not in RendererFactory.RENDERERS[renderer].keys():
             raise RendererNotFoundError(
-                f"No such aggregation method {aggregation} for renderer {renderer}."
+                f"No such aggregation method {aggregation} for renderer {renderer}.",
             )
         return RendererFactory.RENDERERS[renderer][aggregation](
             running=running,

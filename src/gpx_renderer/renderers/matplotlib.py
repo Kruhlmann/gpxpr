@@ -38,9 +38,9 @@ class MatplotLibRenderer(Renderer, abc.ABC):
 
     def _set_legend(self, axes: Any) -> None:
         custom_lines = [
-            Line2D([0], [0], color=self._running_color, lw=4),
-            Line2D([0], [0], color=self._walking_color, lw=4),
-            Line2D([0], [0], color=self._standing_color, lw=4),
+            Line2D([0], [0], color=self._running_color, lw=4),  # noqa: WPS204
+            Line2D([0], [0], color=self._walking_color, lw=4),  # noqa: WPS204
+            Line2D([0], [0], color=self._standing_color, lw=4),  # noqa: WPS204
         ]
         axes.legend(custom_lines, ["Running", "Walking", "Standing"])
 

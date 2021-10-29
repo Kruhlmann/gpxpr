@@ -4,16 +4,16 @@ from typing import KeysView
 
 class GPXPRArgParserFactory:
     @staticmethod
-    def create_argparser(
+    def create_argparser(  # noqa: WPS602,WPS605
         available_renderers: KeysView[str],
-    ) -> argparse.ArgumentParser:  # noqa: WPS605,WPS602
+    ) -> argparse.ArgumentParser:
         argparser = argparse.ArgumentParser()
         argparser.add_argument(
             "-r",
             "--renderer",
             required=True,
             type=str,
-            help=f"Renderer to use [{', '.join(available_renderers)}]",
+            help=f"Renderer to use [{', '.join(available_renderers)}]",  # noqa: WPS237
             action="store",
             dest="renderer",
         )
