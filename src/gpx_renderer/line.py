@@ -1,4 +1,4 @@
-from attr import dataclass
+from dataclasses import dataclass
 
 from gpx_renderer.vector import Vector
 
