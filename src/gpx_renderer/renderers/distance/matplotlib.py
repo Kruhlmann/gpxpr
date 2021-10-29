@@ -15,8 +15,9 @@ class MatplotLibDistanceRenderer(MatplotLibRenderer):
             xlabel="Distance (meters)",
         )
 
-    def _compute_lines(
-        self, intervals: Iterator[GPXInterval]
+    def _compute_lines(  # noqa: WPS210
+        self,
+        intervals: Iterator[GPXInterval],
     ) -> Iterator[Line]:  # noqa: WPS210
         current_distance: float = 0
         last_vector: Optional[Vector] = None

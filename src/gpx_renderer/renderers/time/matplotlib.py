@@ -16,14 +16,16 @@ class MatplotLibTimeRenderer(MatplotLibRenderer):
             xlabel="Time (seconds)",
         )
 
-    def _compute_lines(self, intervals: Iterator[GPXInterval]) -> Iterator[Line]:
+    def _compute_lines(  # noqa: WPS210
+        self, intervals: Iterator[GPXInterval]
+    ) -> Iterator[Line]:
         last_idx: int = 1
         last_vector: Optional[Vector] = None
         for interval in intervals:
-            x1 = last_idx  # noqa: WPS121
-            x2 = last_idx + int(interval.duration_s) + 1  # noqa: WPS121
-            x = x2 - abs(x1 - x2) / 2  # noqa: WPS121
-            y = min(interval.speed_kmtime, self._walking)  # noqa: WPS121
+            x1 = last_idx  # noqa: WPS121,WPS111
+            x2 = last_idx + int(interval.duration_s) + 1  # noqa: WPS121,WPS111
+            x = x2 - abs(x1 - x2) / 2  # noqa: WPS121,WPS111
+            y = min(interval.speed_kmtime, self._walking)  # noqa: WPS121,WPS111
             color = self._color_from_pace(interval.speed_kmtime)
             current_vector = Vector(x, y)
             yield Line(
