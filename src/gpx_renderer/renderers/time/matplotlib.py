@@ -17,7 +17,8 @@ class MatplotLibTimeRenderer(MatplotLibRenderer):
         )
 
     def _compute_lines(  # noqa: WPS210
-        self, intervals: Iterator[GPXInterval]
+        self,
+        intervals: Iterator[GPXInterval],
     ) -> Iterator[Line]:
         last_idx: int = 1
         last_vector: Optional[Vector] = None
