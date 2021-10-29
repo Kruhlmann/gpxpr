@@ -24,7 +24,7 @@ make install
 ## Usage
 
 ```
-usage: gpxpr [-h] -r RENDERER -w WALKING -v RUNNING [-o DESTINATION] target
+usage: gpxpr [-h] -r RENDERER -w WALKING -v RUNNING -a {time,distance} [-o DESTINATION] target
 
 positional arguments:
   target                File to process
@@ -37,6 +37,8 @@ optional arguments:
                         Slowest min/km where a runner is considered 'walking'
   -v RUNNING, --min-running-speed RUNNING
                         Slowest min/km when a runner is considered 'running'
+  -a {time,distance}, --aggregation-value {time,distance}
+                        Value to base the aggregation on
   -o DESTINATION, --output DESTINATION
                         Output location. Default is /dev/stdout
 ```
