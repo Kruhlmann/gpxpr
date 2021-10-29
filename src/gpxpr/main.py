@@ -11,6 +11,7 @@ def parse_and_render(argv: list[str]) -> None:
     parser = GPXFileParser(arguments.target)
     renderer = RendererFactory.renderer_from_string(
         renderer=arguments.renderer,
+        aggregation=arguments.aggregation,
         running=arguments.running,
         walking=arguments.walking,
         destination=arguments.destination,

@@ -1,6 +1,7 @@
+import abc
 import datetime
 import sys
-from typing import Any, Iterator, Optional
+from typing import Any, Iterator
 
 from matplotlib.lines import Line2D
 from matplotlib import pyplot
@@ -8,15 +9,15 @@ from matplotlib import pyplot
 from gpx_parser.parser.gpx_track_interval import GPXInterval
 from gpx_renderer.line import Line
 from gpx_renderer.renderer import Renderer
-from gpx_renderer.vector import Vector
 
 
-class MatplotLibRenderer(Renderer):
-    def __init__(self, running: float, walking: float, destination: str):
+class MatplotLibRenderer(Renderer, abc.ABC):
+    def __init__(self, running: float, walking: float, destination: str, xlabel: str):
         super().__init__(running=running, walking=walking, destination=destination)
-        self._running_color = "green"
-        self._walking_color = "orange"
-        self._standing_color = "red"
+        self._running_color: str = "green"
+        self._walking_color: str = "orange"
+        self._standing_color: str = "red"
+        self._xlabel: str = xlabel
 
     def _color_from_pace(self, pace: float) -> str:
         if pace < self._running:
@@ -25,24 +26,12 @@ class MatplotLibRenderer(Renderer):
             return self._walking_color
         return self._standing_color
 
+    @abc.abstractmethod
     def _compute_lines(
         self,
         intervals: Iterator[GPXInterval],
     ) -> Iterator[Line]:
-        last_idx: int = 1
-        last_vector: Optional[Vector] = None
-        for interval in intervals:
-            x1 = last_idx  # noqa: WPS121
-            x2 = last_idx + int(interval.duration_s) + 1  # noqa: WPS121
-            x = x2 - abs(x1 - x2) / 2  # noqa: WPS121
-            y = min(interval.speed_kmtime, self._walking)  # noqa: WPS121
-            color = self._color_from_pace(interval.speed_kmtime)
-            current_vector = Vector(x, y)
-            yield Line(
-                start=last_vector or current_vector, end=current_vector, color=color
-            )
-            last_idx = x2
-            last_vector = current_vector
+        raise NotImplementedError()
 
     def _set_legend(self, axes: Any) -> None:
         custom_lines = [
@@ -55,7 +44,7 @@ class MatplotLibRenderer(Renderer):
     def _set_axes_formatting(self, axes: Any) -> None:
         axes.xaxis.set_major_formatter(self._x_axis_formatter)
         axes.yaxis.grid(True)
-        pyplot.xlabel("Time")
+        pyplot.xlabel(self._xlabel)
         pyplot.ylabel("Pace (min/km)")
 
     def _x_axis_formatter(self, seconds: int, _: Any) -> str:

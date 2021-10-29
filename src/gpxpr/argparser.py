@@ -36,6 +36,16 @@ class GPXPRArgParserFactory:
             dest="running",
         )
         argparser.add_argument(
+            "-a",
+            "--aggregation-value",
+            required=True,
+            choices=["time", "distance"],
+            type=str,
+            help="Value to base the aggregation on",
+            action="store",
+            dest="aggregation",
+        )
+        argparser.add_argument(
             "-o",
             "--output",
             required=False,
